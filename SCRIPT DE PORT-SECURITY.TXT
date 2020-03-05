@@ -1,0 +1,42 @@
+enable 
+configure terminal
+hostname S1
+enable secret class
+banner motd "WARNING"
+line console 0
+password cisco
+login
+exit
+service password-encryption
+username admin privilege 15 secret ccna
+ip domain-name cisco.com
+crypto key generate rsa general-key modulus 1024
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+exit
+interface range FastEthernet0/3-24
+shutdown
+exit
+interface rang GigabitEthernet0/1-02
+shutdown
+exit
+interface FastEthernet0/1
+switchport mode access
+switchport port-security 
+switchport port-security maximum 2
+switchport port-security violation shutdown
+switchport port-security mac-address sticky
+exit
+interface FastEthernet0/2
+switchport mode access
+switchport port-security 
+switchport port-security maximum 2
+switchport port-security violation shutdown
+switchport port-security mac-address sticky
+interface vlan 1
+ip address 10.10.10.2 255.255.255.0
+no shutdown
+description INTERFACE DE GERENCIAMENTO
+do wr
